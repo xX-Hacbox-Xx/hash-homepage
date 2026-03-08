@@ -11,8 +11,6 @@ import {
 } from '@remix-run/react';
 import { createCookieSessionStorage, json } from '@remix-run/cloudflare';
 import { ThemeProvider, themeStyles } from '~/components/theme-provider';
-import GothamBook from '~/assets/fonts/gotham-book.woff2';
-import GothamMedium from '~/assets/fonts/gotham-medium.woff2';
 import MisansNormal from '~/assets/fonts/MiSans-Normal.woff2';
 import MisansLight from '~/assets/fonts/MiSans-Light.woff2';
 import MisansHeavy from '~/assets/fonts/MiSans-Heavy.woff2';
@@ -28,20 +26,6 @@ import './reset.module.css';
 import './global.module.css';
 
 export const links = () => [
-  {
-    rel: 'preload',
-    href: GothamMedium,
-    as: 'font',
-    type: 'font/woff2',
-    crossOrigin: '',
-  },
-  {
-    rel: 'preload',
-    href: GothamBook,
-    as: 'font',
-    type: 'font/woff2',
-    crossOrigin: '',
-  },
   {
     rel: 'preload',
     href: MisansBold,

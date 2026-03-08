@@ -10,16 +10,15 @@ _______________________________________________________________________________
 
 DESIGNER | デザイナー
 
-Hamish Williams
+Yink Wang
 Hand crafted design & web development
 
 Design tools:
 Figma
 Photoshop
 Blender
-
-twitter.com/hamishmw
-github.com/hamishmw
+Maya
+Unreal Engine
 
 _______________________________________________________________________________
 
@@ -35,5 +34,6 @@ _______________________________________________________________________________
 FONTS | フォント
 
 Gotham
+Misans
 IPA Gothic Regular
 Hiragino Kaku Gothic W8

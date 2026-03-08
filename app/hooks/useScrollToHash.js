@@ -13,6 +13,9 @@ export function useScrollToHash() {
       const id = hash.split('#')[1];
       const targetElement = document.getElementById(id);
 
+      // 👉 加上这一行：如果找不到该元素，就直接退出，不要报错
+      if (!targetElement) return;
+      
       targetElement.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
 
       const handleScroll = () => {

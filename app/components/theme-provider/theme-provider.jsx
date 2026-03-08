@@ -1,12 +1,7 @@
-import GothamBoldItalic from '~/assets/fonts/gotham-bold-italic.woff2';
-import GothamBold from '~/assets/fonts/gotham-bold.woff2';
-import GothamBookItalic from '~/assets/fonts/gotham-book-italic.woff2';
-import GothamBook from '~/assets/fonts/gotham-book.woff2';
-import GothamMediumItalic from '~/assets/fonts/gotham-medium-italic.woff2';
-import GothamMedium from '~/assets/fonts/gotham-medium.woff2';
 import MisansBold from '~/assets/fonts/MiSans-Bold.woff2';
 import MisansNormal from '~/assets/fonts/MiSans-Normal.woff2';
 import MisansLight from '~/assets/fonts/MiSans-Light.woff2';
+import MisansMedium from '~/assets/fonts/MiSans-Medium.woff2';
 import MisansHeavy from '~/assets/fonts/MiSans-Heavy.woff2';
 import IPAGothic from '~/assets/fonts/ipa-gothic.woff2';
 import { createContext, useContext } from 'react';
@@ -127,6 +122,14 @@ const fontStyles = squish(`
     font-display: block;
     font-style: normal;
   }
+    
+  @font-face {
+    font-family: 'MiSans';
+    font-weight: 500;
+    src: url(${MisansMedium}) format('woff2');
+    font-display: block;
+    font-style: normal;
+  }
 
   @font-face {
     font-family: Misans;
@@ -134,54 +137,6 @@ const fontStyles = squish(`
     src: url(${MisansBold}) format('woff2');
     font-display: block;
     font-style: normal;
-  }
-
-  @font-face {
-    font-family: Gotham;
-    font-weight: 400;
-    src: url(${GothamBook}) format('woff2');
-    font-display: block;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: Gotham;
-    font-weight: 400;
-    src: url(${GothamBookItalic}) format('woff2');
-    font-display: block;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: Gotham;
-    font-weight: 500;
-    src: url(${GothamMedium}) format('woff2');
-    font-display: block;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: Gotham;
-    font-weight: 500;
-    src: url(${GothamMediumItalic}) format('woff2');
-    font-display: block;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: Gotham;
-    font-weight: 700;
-    src: url(${GothamBold}) format('woff2');
-    font-display: block;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: Gotham;
-    font-weight: 700;
-    src: url(${GothamBoldItalic}) format('woff2');
-    font-display: block;
-    font-style: italic;
   }
 
   @font-face {

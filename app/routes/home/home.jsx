@@ -16,6 +16,9 @@ import { Intro } from './intro';
 import { Profile } from './profile';
 import { ProjectSummary } from './project-summary';
 import { useEffect, useRef, useState } from 'react';
+import { Heading } from '~/components/heading';
+import { Text } from '~/components/text';
+import { Section } from '~/components/section';
 import config from '~/config.json';
 import styles from './home.module.css';
 
@@ -80,7 +83,9 @@ export const Home = () => {
     );
 
     sections.forEach(section => {
-      sectionObserver.observe(section.current);
+      if (section && section.current) { // 👉 只有当元素真实存在时，才去观察它
+        sectionObserver.observe(section.current);
+      }
     });
 
     indicatorObserver.observe(intro.current);
@@ -98,6 +103,27 @@ export const Home = () => {
         sectionRef={intro}
         scrollIndicatorHidden={scrollIndicatorHidden}
       />
+      {/* 💡 这里是新增的施工中提示区 */}
+      <Section 
+        id="projects-wip" 
+        style={{ 
+          height: '60vh', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          flexDirection: 'column',
+          textAlign: 'center'
+        }}
+      >
+        <Heading level={3} as="h2" weight="bold">
+          🚧 Projects are Working in Progress...
+        </Heading>
+        {/* 把限制宽度的任务交给具体的文字，而不是整个区块 */}
+        <Text size="l" style={{ marginTop: '24px', opacity: 0.8, maxWidth: 'var(--maxWidthM)' }}>
+          Exciting content is coming soon. In the meantime, you can check out my "Articles" or "Details" section.
+        </Text>
+      </Section>
+      {/*
       <ProjectSummary
         id="project-1"
         sectionRef={projectOne}
@@ -163,6 +189,7 @@ export const Home = () => {
           ],
         }}
       />
+      */}
       <Profile
         sectionRef={details}
         visible={visibleSections.includes(details.current)}
