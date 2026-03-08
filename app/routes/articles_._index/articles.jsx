@@ -68,7 +68,7 @@ function ArticlesPost({ slug, frontmatter, timecode, index }) {
             <Divider notchWidth="64px" notchHeight="8px" />
             {dateTime}
           </div>
-          <Heading as="h2" level={featured ? 2 : 4}>
+          <Heading as="h2" level={featured ? 2 : 4} weight="bold">
             {title}
           </Heading>
           <Text size={featured ? 'l' : 's'} as="p">
@@ -141,7 +141,7 @@ export function Articles() {
 
   const postsHeader = (
     <header className={styles.header}>
-      <Heading className={styles.heading} level={5} as="h1">
+      <Heading className={styles.heading} level={5} as="h1" weight="bold">
         <DecoderText text="Latest articles" />
       </Heading>
       <Barcode className={styles.barcode} />

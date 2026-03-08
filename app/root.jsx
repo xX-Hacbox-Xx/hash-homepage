@@ -16,6 +16,7 @@ import GothamMedium from '~/assets/fonts/gotham-medium.woff2';
 import MisansNormal from '~/assets/fonts/MiSans-Normal.woff2';
 import MisansLight from '~/assets/fonts/MiSans-Light.woff2';
 import MisansHeavy from '~/assets/fonts/MiSans-Heavy.woff2';
+import MisansBold from '~/assets/fonts/MiSans-Bold.woff2';
 import { useEffect } from 'react';
 import { Error } from '~/layouts/error';
 import { VisuallyHidden } from '~/components/visually-hidden';
@@ -43,7 +44,7 @@ export const links = () => [
   },
   {
     rel: 'preload',
-    href: MisansHeavy,
+    href: MisansBold,
     as: 'font',
     type: 'font/woff2',
     crossOrigin: '',
@@ -51,13 +52,6 @@ export const links = () => [
   {
     rel: 'preload',
     href: MisansNormal,
-    as: 'font',
-    type: 'font/woff2',
-    crossOrigin: '',
-  },
-  {
-    rel: 'preload',
-    href: MisansLight,
     as: 'font',
     type: 'font/woff2',
     crossOrigin: '',

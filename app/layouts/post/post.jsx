@@ -65,7 +65,7 @@ export const Post = ({ children, title, date, banner, timecode }) => {
                 </div>
               )}
             </Transition>
-            <Heading level={2} as="h1" className={styles.title} aria-label={title}>
+            <Heading level={2} as="h1" className={styles.title} aria-label={title} weight="bold">
               {title.split(' ').map((word, index) => (
                 <span className={styles.titleWordWrapper} key={`${word}-${index}`}>
                   <span
