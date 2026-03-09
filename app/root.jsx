@@ -103,7 +103,7 @@ export default function App() {
   }, []);
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -118,7 +118,7 @@ export default function App() {
         <Links />
         <link rel="canonical" href={canonicalUrl} />
       </head>
-      <body data-theme={theme}>
+      <body data-theme={theme} suppressHydrationWarning>
         <ThemeProvider theme={theme} toggleTheme={toggleTheme}>
           <Progress />
           <VisuallyHidden showOnFocus as="a" className={styles.skip} href="#main-content">
