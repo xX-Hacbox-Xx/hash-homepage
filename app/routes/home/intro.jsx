@@ -68,8 +68,7 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
                 <DisplacementSphere />
               </Suspense>
             )}
-            
-            <header className={styles.text} translate="no">
+            <header className={styles.text}>
               <h1 className={styles.name} data-visible={visible} id={titleId}>
                 <DecoderText text={config.name} delay={500} />
               </h1>
@@ -78,55 +77,44 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
                   {`${config.role} + ${introLabel}`}
                 </VisuallyHidden>
                 
-                {isHydrated ? (
-                  /* 【核心修改】将两行内容合并到同一个 div.row 中，保持单行显示 */
-                  <div className={styles.row}>
-                    {/* 1. 左侧固定的身份词 Designer */}
-                    <span
-                      className={styles.word}
-                      data-status={status}
-                      style={cssProps({ delay: tokens.base.durationXS })}
+                {/* 第一行：Designer 和横线 */}
+                <span aria-hidden className={styles.row}>
+                  <span
+                    className={styles.word}
+                    data-status={status}
+                    style={cssProps({ delay: tokens.base.durationXS })}
+                  >
+                    {config.role}
+                  </span>
+                  <span className={styles.line} data-status={status} />
+                </span>
+                
+                {/* 第二行：轮播的 + Developer 等等 */}
+                {/* 【重点修复】：把原本的 div 改为了 span。这样 HTML 结构就合法了，绝对不会再报 #423 错误和错位了！ */}
+                <span className={styles.row}>
+                  {disciplines.map(item => (
+                    <Transition
+                      unmount
+                      in={item === currentDiscipline}
+                      timeout={{ enter: 3000, exit: 2000 }}
+                      key={item}
                     >
-                      {config.role}
-                    </span>
-                    
-                    {/* 2. 中间的轮播词 Developer, Researcher... */}
-                    <span className={styles.row} style={{ marginLeft: '12px', minHeight: '1.2em' }}>
-                      {disciplines.map(item => (
-                        <Transition
-                          unmount
-                          in={item === currentDiscipline}
-                          timeout={{ enter: 3000, exit: 2000 }}
-                          key={item}
+                      {({ status, nodeRef }) => (
+                        <span
+                          aria-hidden
+                          ref={nodeRef}
+                          className={styles.word}
+                          data-plus={true}
+                          data-status={status}
+                          style={cssProps({ delay: tokens.base.durationL })}
                         >
-                          {({ status, nodeRef }) => (
-                            <span
-                              aria-hidden
-                              ref={nodeRef}
-                              className={styles.word}
-                              data-plus={true}
-                              data-status={status}
-                              style={cssProps({ delay: tokens.base.durationL })}
-                            >
-                              {item}
-                            </span>
-                          )}
-                        </Transition>
-                      ))}
-                    </span>
-
-                    {/* 3. 装饰横线移到最后面 */}
-                    <span className={styles.line} data-status={status} />
-                  </div>
-                ) : (
-                  /* SSR 占位符：保持初始状态和渲染后高度完全一致，防止任何跳动 */
-                  <div className={styles.row}>
-                    <span className={styles.word} style={{ opacity: 0 }}>
-                      {config.role}
-                    </span>
-                    <span className={styles.row} style={{ marginLeft: '12px', minHeight: '1.2em' }} />
-                  </div>
-                )}
+                          {item}
+                        </span>
+                      )}
+                    </Transition>
+                  ))}
+                </span>
+                
               </Heading>
             </header>
             <RouterLink
