@@ -76,39 +76,59 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
                 <VisuallyHidden className={styles.label}>
                   {`${config.role} + ${introLabel}`}
                 </VisuallyHidden>
-                <span aria-hidden className={styles.row}>
-                  <span
-                    className={styles.word}
-                    data-status={status}
-                    style={cssProps({ delay: tokens.base.durationXS })}
-                  >
-                    {config.role}
-                  </span>
-                  <span className={styles.line} data-status={status} />
-                </span>
-                <div className={styles.row}>
-                  {disciplines.map(item => (
-                    <Transition
-                      unmount
-                      in={item === currentDiscipline}
-                      timeout={{ enter: 3000, exit: 2000 }}
-                      key={item}
-                    >
-                      {({ status, nodeRef }) => (
-                        <span
-                          aria-hidden
-                          ref={nodeRef}
-                          className={styles.word}
-                          data-plus={true}
-                          data-status={status}
-                          style={cssProps({ delay: tokens.base.durationL })}
+                
+                {/* 仅在客户端渲染核心排版内容，彻底阻断服务器和插件的水合冲突 */}
+                {isHydrated ? (
+                  <>
+                    <span aria-hidden className={styles.row}>
+                      <span
+                        className={styles.word}
+                        data-status={status}
+                        style={cssProps({ delay: tokens.base.durationXS })}
+                        translate="no" // 告诉翻译插件不要动这个词
+                      >
+                        {config.role}
+                      </span>
+                      <span className={styles.line} data-status={status} />
+                    </span>
+                    
+                    {/* 给第二行添加一个最小高度，防止在轮播词切换时由于插件注入标签导致高度坍塌 */}
+                    <div className={styles.row} style={{ minHeight: '1.2em' }}>
+                      {disciplines.map(item => (
+                        <Transition
+                          unmount
+                          in={item === currentDiscipline}
+                          timeout={{ enter: 3000, exit: 2000 }}
+                          key={item}
                         >
-                          {item}
-                        </span>
-                      )}
-                    </Transition>
-                  ))}
-                </div>
+                          {({ status, nodeRef }) => (
+                            <span
+                              aria-hidden
+                              ref={nodeRef}
+                              className={styles.word}
+                              data-plus={true}
+                              data-status={status}
+                              style={cssProps({ delay: tokens.base.durationL })}
+                              translate="no" // 保护轮播词不被插件截断
+                            >
+                              {item}
+                            </span>
+                          )}
+                        </Transition>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  /* 服务器端渲染时的占位符，保持高度一致以防页面跳动 */
+                  <>
+                    <span aria-hidden className={styles.row}>
+                      <span className={styles.word} style={{ opacity: 0 }}>
+                        {config.role}
+                      </span>
+                    </span>
+                    <div className={styles.row} style={{ minHeight: '1.2em' }} />
+                  </>
+                )}
               </Heading>
             </header>
             <RouterLink
