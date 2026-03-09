@@ -68,7 +68,8 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
                 <DisplacementSphere />
               </Suspense>
             )}
-            <header className={styles.text}>
+            
+            <header className={styles.text} translate="no">
               <h1 className={styles.name} data-visible={visible} id={titleId}>
                 <DecoderText text={config.name} delay={500} />
               </h1>
@@ -77,23 +78,20 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
                   {`${config.role} + ${introLabel}`}
                 </VisuallyHidden>
                 
-                {/* 仅在客户端渲染核心排版内容，彻底阻断服务器和插件的水合冲突 */}
                 {isHydrated ? (
-                  <>
-                    <span aria-hidden className={styles.row}>
-                      <span
-                        className={styles.word}
-                        data-status={status}
-                        style={cssProps({ delay: tokens.base.durationXS })}
-                        translate="no" // 告诉翻译插件不要动这个词
-                      >
-                        {config.role}
-                      </span>
-                      <span className={styles.line} data-status={status} />
+                  /* 【核心修改】将两行内容合并到同一个 div.row 中，保持单行显示 */
+                  <div className={styles.row}>
+                    {/* 1. 左侧固定的身份词 Designer */}
+                    <span
+                      className={styles.word}
+                      data-status={status}
+                      style={cssProps({ delay: tokens.base.durationXS })}
+                    >
+                      {config.role}
                     </span>
                     
-                    {/* 给第二行添加一个最小高度，防止在轮播词切换时由于插件注入标签导致高度坍塌 */}
-                    <div className={styles.row} style={{ minHeight: '1.2em' }}>
+                    {/* 2. 中间的轮播词 Developer, Researcher... */}
+                    <span className={styles.row} style={{ marginLeft: '12px', minHeight: '1.2em' }}>
                       {disciplines.map(item => (
                         <Transition
                           unmount
@@ -109,25 +107,25 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
                               data-plus={true}
                               data-status={status}
                               style={cssProps({ delay: tokens.base.durationL })}
-                              translate="no" // 保护轮播词不被插件截断
                             >
                               {item}
                             </span>
                           )}
                         </Transition>
                       ))}
-                    </div>
-                  </>
-                ) : (
-                  /* 服务器端渲染时的占位符，保持高度一致以防页面跳动 */
-                  <>
-                    <span aria-hidden className={styles.row}>
-                      <span className={styles.word} style={{ opacity: 0 }}>
-                        {config.role}
-                      </span>
                     </span>
-                    <div className={styles.row} style={{ minHeight: '1.2em' }} />
-                  </>
+
+                    {/* 3. 装饰横线移到最后面 */}
+                    <span className={styles.line} data-status={status} />
+                  </div>
+                ) : (
+                  /* SSR 占位符：保持初始状态和渲染后高度完全一致，防止任何跳动 */
+                  <div className={styles.row}>
+                    <span className={styles.word} style={{ opacity: 0 }}>
+                      {config.role}
+                    </span>
+                    <span className={styles.row} style={{ marginLeft: '12px', minHeight: '1.2em' }} />
+                  </div>
                 )}
               </Heading>
             </header>

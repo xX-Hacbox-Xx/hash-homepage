@@ -21,7 +21,7 @@ const ProfileText = ({ visible, titleId }) => (
       <DecoderText text="Hi there" start={visible} delay={500} />
     </Heading>
     <Text className={styles.description} data-visible={visible} size="l" as="p">
-      I'm Yink Wang, currently pursuing a Master's degree in Design Studies in Canton. 
+      I'm Yink, currently pursuing a Master's degree in Design Studies in Canton. 
       My research focuses on user experience design, interaction design, and VR design studies.
       I'm proficient in various interactive prototyping tools and conducting usability research. 
       If you're interested in the tools and software I use, 
@@ -85,7 +85,7 @@ export const Profile = ({ id, visible, sectionRef }) => {
                   width={960}
                   height={1280}
                   sizes={`(max-width: ${media.mobile}px) 100vw, 480px`}
-                  alt="Me smiling like a goofball at the Qwilr office in Sydney"
+                  alt="Me stood in front of the camera wearing a suit with disheveled hair, the city night view of Canton behind me."
                 />
                 <svg className={styles.svg} data-visible={visible} viewBox="0 0 136 766">
                   <use href={`${katakana}#katakana-profile`} />
