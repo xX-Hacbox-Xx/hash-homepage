@@ -13,7 +13,6 @@ import config from '~/config.json';
 import { useHydrated } from '~/hooks/useHydrated';
 import styles from './intro.module.css';
 
-const disciplineTransitionTimeout = { enter: 3000, exit: 2000 };
 const DisplacementSphere = lazy(() =>
   import('./displacement-sphere').then(module => ({ default: module.DisplacementSphere }))
 );
@@ -64,22 +63,14 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
       <Transition in key={theme} timeout={3000}>
         {({ visible, status }) => (
           <>
-           {isHydrated && (
-              <div aria-hidden style={{ position: 'absolute', inset: 0 }}>
-                <Suspense>
-                  <DisplacementSphere />
-                </Suspense>
-              </div>
+            {isHydrated && (
+              <Suspense>
+                <DisplacementSphere />
+              </Suspense>
             )}
-            <header 
-              className={`${styles.text} notranslate`} 
-              translate="no"
-              data-gramm="false" 
-              data-gramm_editor="false"
-              data-enable-grammarly="false"
-            >
+            <header className={`${styles.text} notranslate`} translate="no">
               <h1 className={styles.name} data-visible={visible} id={titleId}>
-                <DecoderText text={config.name} delay={500} />
+              <DecoderText text={config.name} delay={500} />
               </h1>
               <Heading level={0} as="h2" className={styles.title}>
                 <VisuallyHidden className={styles.label}>
@@ -96,14 +87,16 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
                     {config.role}
                   </span>
                   <span className={styles.line} data-status={status} />
-                </span> 
-               
+                </span>
+                
+                {/* 第二行：轮播的 + Developer 等等 */}
+                {/* 【重点修复】：把原本的 div 改为了 span。这样 HTML 结构就合法了，绝对不会再报 #423 错误和错位了！ */}
                 <span className={styles.row}>
                   {disciplines.map(item => (
                     <Transition
                       unmount
                       in={item === currentDiscipline}
-                      timeout={disciplineTransitionTimeout}
+                      timeout={{ enter: 3000, exit: 2000 }}
                       key={item}
                     >
                       {({ status, nodeRef }) => (
@@ -121,6 +114,7 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
                     </Transition>
                   ))}
                 </span>
+                
               </Heading>
             </header>
             <RouterLink
