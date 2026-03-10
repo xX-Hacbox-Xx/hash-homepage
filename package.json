@@ -35,6 +35,7 @@
     "@csstools/postcss-global-data": "^2.1.1",
     "@mapbox/rehype-prism": "^0.9.0",
     "@mdx-js/rollup": "^3.0.1",
+    "@vercel/remix": "^2.16.7",
     "@remix-run/dev": "^2.7.1",
     "@storybook/addon-a11y": "^7.6.17",
     "@storybook/addon-essentials": "^7.6.17",
