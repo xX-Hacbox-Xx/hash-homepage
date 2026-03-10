@@ -9,7 +9,7 @@ import {
   useNavigation,
   useRouteError,
 } from '@remix-run/react';
-import { createCookieSessionStorage, json } from '@remix-run/cloudflare';
+import { createCookieSessionStorage, json } from '@remix-run/node';
 import { ThemeProvider, themeStyles } from '~/components/theme-provider';
 import MisansNormal from '~/assets/fonts/MiSans-Normal.woff2';
 import MisansLight from '~/assets/fonts/MiSans-Light.woff2';
@@ -48,7 +48,7 @@ export const links = () => [
   { rel: 'author', href: '/humans.txt', type: 'text/plain' },
 ];
 
-export const loader = async ({ request, context }) => {
+export const loader = async ({ request }) => {
   const { url } = request;
   const { pathname } = new URL(url);
   const pathnameSliced = pathname.endsWith('/') ? pathname.slice(0, -1) : url;
@@ -61,7 +61,7 @@ export const loader = async ({ request, context }) => {
       maxAge: 604_800,
       path: '/',
       sameSite: 'lax',
-      secrets: [context.cloudflare.env.SESSION_SECRET || ' '],
+      secrets: [process.env.SESSION_SECRET || ' '],
       secure: true,
     },
   });

@@ -14,8 +14,10 @@ import { useRef } from 'react';
 import { cssProps, msToNum, numToMs } from '~/utils/style';
 import { baseMeta } from '~/utils/meta';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
-import { json } from '@remix-run/cloudflare';
-//import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
+
+// ✨ 核心修改 1：彻底删除了 import { json } from '@remix-run/node'; 
+// 切断了浏览器和 Node.js 核心库的羁绊，彻底解决 process is not defined 报错！
+
 import styles from './contact.module.css';
 
 export const meta = () => {
@@ -30,17 +32,16 @@ const MAX_EMAIL_LENGTH = 512;
 const MAX_MESSAGE_LENGTH = 4096;
 const EMAIL_PATTERN = /(.+)@(.+){2,}\.(.+){2,}/;
 
-export async function action({ context, request }) {
+export async function action({ request }) {
   const formData = await request.formData();
   const isBot = String(formData.get('name'));
   const email = String(formData.get('email'));
   const message = String(formData.get('message'));
   const errors = {};
 
-  // 如果机器人填了蜜罐字段，直接返回成功假象
-  if (isBot) return json({ success: true });
+  // ✨ 核心修改 2：全部替换为原生的 Response.json()
+  if (isBot) return Response.json({ success: true });
 
-  // 表单验证
   if (!email || !EMAIL_PATTERN.test(email)) {
     errors.email = 'Please enter a valid email address.';
   }
@@ -54,17 +55,15 @@ export async function action({ context, request }) {
     errors.message = `Message must be shorter than ${MAX_MESSAGE_LENGTH} characters.`;
   }
   if (Object.keys(errors).length > 0) {
-    return json({ errors });
+    return Response.json({ errors });
   }
 
-  // --- 从 Cloudflare 环境变量获取微软配置 ---
-  const tenantId = context.cloudflare.env.MS_TENANT_ID;
-  const clientId = context.cloudflare.env.MS_CLIENT_ID;
-  const clientSecret = context.cloudflare.env.MS_CLIENT_SECRET;
-  const userEmail = context.cloudflare.env.MS_USER_EMAIL;
+  const tenantId = process.env.MS_TENANT_ID;
+  const clientId = process.env.MS_CLIENT_ID;
+  const clientSecret = process.env.MS_CLIENT_SECRET;
+  const userEmail = process.env.MS_USER_EMAIL;
 
   try {
-    // 1. 获取 Microsoft Graph Access Token
     const tokenResponse = await fetch(`https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -82,7 +81,6 @@ export async function action({ context, request }) {
       throw new Error("Failed to get access token");
     }
 
-    // 2. 使用 Token 发送邮件
     const sendResponse = await fetch(`https://graph.microsoft.com/v1.0/users/${userEmail}/sendMail`, {
       method: 'POST',
       headers: {
@@ -96,10 +94,10 @@ export async function action({ context, request }) {
             contentType: "Text",
             content: `发件人: ${email}\n\n内容:\n${message}`
           },
-          toRecipients: [{ emailAddress: { address: userEmail } }], // 发给自己
-          replyTo: [{ emailAddress: { address: email } }]           // 方便直接点击“回复”回信给访客
+          toRecipients: [{ emailAddress: { address: userEmail } }], 
+          replyTo: [{ emailAddress: { address: email } }]           
         },
-        saveToSentItems: "false" // 设为 false 可避免占用你邮箱的“已发送”文件夹空间
+        saveToSentItems: "false" 
       })
     });
 
@@ -109,12 +107,11 @@ export async function action({ context, request }) {
       throw new Error("Failed to send email");
     }
 
-    return json({ success: true });
+    return Response.json({ success: true });
 
   } catch (error) {
     console.error("邮件服务异常:", error);
-    // 为了前端体验，你可以根据需要返回错误提示
-    return json({ errors: { message: " 服务暂时不可用，请稍后再试或通过其他社交媒体联系我。" } });
+    return Response.json({ errors: { message: " 服务暂时不可用，请稍后再试或通过其他社交媒体联系我。" } });
   }
 }
 
@@ -260,7 +257,6 @@ export const Contact = () => {
     </Section>
   );
 };
-
 function getDelay(delayMs, offset = numToMs(0), multiplier = 1) {
   const numDelay = msToNum(delayMs) * multiplier;
   return cssProps({ delay: numToMs((msToNum(offset) + numDelay).toFixed(0)) });
