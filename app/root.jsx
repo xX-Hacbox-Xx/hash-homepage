@@ -26,7 +26,7 @@ import './reset.module.css';
 import './global.module.css';
 
 export const links = () => [
-  {
+  /*{
     rel: 'preload',
     href: MisansBold,
     as: 'font',
@@ -39,7 +39,7 @@ export const links = () => [
     as: 'font',
     type: 'font/woff2',
     crossOrigin: '',
-  },
+  },*/
   { rel: 'manifest', href: '/manifest.json' },
   { rel: 'icon', href: '/favicon.ico' },
   { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },

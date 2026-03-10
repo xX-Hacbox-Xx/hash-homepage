@@ -119,7 +119,7 @@ const fontStyles = squish(`
     font-family: Misans;
     font-weight: 400;
     src: url(${MisansNormal}) format('woff2');
-    font-display: block;
+    font-display: swap;
     font-style: normal;
   }
     
@@ -127,7 +127,7 @@ const fontStyles = squish(`
     font-family: 'MiSans';
     font-weight: 500;
     src: url(${MisansMedium}) format('woff2');
-    font-display: block;
+    font-display: swap;
     font-style: normal;
   }
 
@@ -135,7 +135,7 @@ const fontStyles = squish(`
     font-family: Misans;
     font-weight: 700;
     src: url(${MisansBold}) format('woff2');
-    font-display: block;
+    font-display: swap;
     font-style: normal;
   }
 
